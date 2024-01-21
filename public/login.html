@@ -1,22 +1,234 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Login</title>
+      <title>Login</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+      <style>
+          html, body {
+            overflow: hidden; 
+            margin: 0;
+            padding: 0; 
+            height: 100%; 
+          }
+          body {
+              background-color: #f4f4f4;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              margin: 0;
+              padding: 10px;
+          }
+          .login-form {
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              padding: 20px;
+              background: white;
+              border-radius: 5px;
+              width: 300px;
+              min-width: 250px;
+              position: relative;
+              z-index: 10;
+          }
+          .login-form h1 {
+              text-align: center;
+              margin-bottom: 20px;
+          }
+          .login-form button {
+              width: 100%;
+              background-color: #2185d0;
+              color: white;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+          }
+          .login-form button:hover {
+              opacity: 0.9;
+          }
+          .eye-icon {
+              cursor: pointer;
+              position: absolute;
+              right: 10px;
+              top: 35px;
+          }
+
+          @media (max-width: 480px) { 
+              .login-form {
+                  width: 100%;
+                  min-width: 0; 
+              }
+              body{
+                  padding: 0;
+              }
+          }
+
+
+          /* shaappeesssss */
+          .shape{
+            position:absolute;
+            z-index: 2;
+            opacity: 0.6;
+            animation: floatAnimation 6s ease-in-out infinite;
+          }
+          #shapeContainer {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              overflow: none;
+              z-index: 2;
+          }
+
+          .floating-shape {
+              position: absolute;
+              opacity: 0.6;
+          }
+
+          .circle {
+              border-radius: 50%;
+          }
+
+          .square {
+              width: 60px;
+              height: 60px;
+          }
+
+          .rectangle {
+              width: 80px;
+              height: 40px;
+          }
+
+          .triangle {
+              width: 0;
+              height: 0;
+              border-bottom: 60px solid;
+          }
+
+          .trapezoid {
+              border-bottom: 50px solid;
+              border-left: 25px solid transparent;
+              border-right: 25px solid transparent;
+              height: 0;
+              width: 75px;
+          }
+
+          @keyframes floatAnimation {
+              0% {
+                  transform: translate(0, 0) rotate(0deg);
+                  opacity: 0.6;
+              }
+              50% {
+                  transform: translate(20vw, 20vh) rotate(180deg);
+                  opacity: 0.8;
+              }
+              100% {
+                  transform: translate(0, 0) rotate(360deg);
+                  opacity: 0.6;
+              }
+          }
+      </style>
   </head>
   <body>
-    <form action="/login" method="post">
-      <div>
-        <label>Username:</label>
-        <input type="text" name="username" required>
+    <div style="top:0%;left:0%;position:absolute;z-index: 11;width:fit-content">
+      <div class="ui compact menu" style="width:auto">
+        <div class="ui simple dropdown item">
+          Account Details
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <div class="item">
+                <div class="ui list">
+                  <div class="item">
+                    <i class="user icon"></i>
+                    <div class="content">
+                      <div class="header">Username:</div>
+                      <div class="description">user</div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <i class="lock icon"></i>
+                    <div class="content">
+                      <div class="header">Password:</div>
+                      <div class="description">password</div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" name="password" required>
-      </div>
-      <div>
-        <button type="submit">Login</button>
-      </div>
-    </form>
+    </div>
+    <div id="shapeContainer"></div>
+    <div class="login-form">
+        <h1>Login</h1>
+        <form action="/login" method="post" class="ui form">
+            <div class="field">
+                <label>Username</label>
+                <input type="text" name="username" required>
+            </div>
+            <div class="field" style="position: relative;">
+                <label>Password</label>
+                <input type="password" name="password" id="password" required>
+                <i class="eye icon eye-icon" onclick="togglePasswordVisibility()"></i>
+            </div>
+            <button class="ui button" type="submit">Login</button>
+        </form>
+
+    </div>
+    <script>
+      function togglePasswordVisibility() {
+          var passwordInput = document.getElementById("password");
+          var passStatus = passwordInput.getAttribute('type');
+
+          if (passStatus === 'password') {
+              passwordInput.setAttribute('type', 'text');
+          } else {
+              passwordInput.setAttribute('type', 'password');
+          }
+      }
+      function randomRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function randomColor() {
+        const hue = Math.floor(randomRange(0, 360)); 
+        const saturation = Math.floor(randomRange(50, 100)); 
+        const lightness = Math.floor(randomRange(40, 60));
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      }
+
+      function createShapes() {
+        const shapesArray = ['circle', 'square', 'rectangle', 'triangle'];
+
+        for (let i = 0; i < 50; i++) { 
+          const shape = document.createElement('div');
+          const shapeType = shapesArray[Math.floor(randomRange(0, shapesArray.length))];
+          const color = randomColor(); 
+          const size = randomRange(20, 100); 
+
+          shape.classList.add('shape', shapeType);
+          shape.style.backgroundColor = shapeType !== 'triangle' ? color : 'transparent';
+          shape.style.borderColor = shapeType === 'triangle' ? color + ' transparent transparent' : 'transparent';
+          shape.style.width = shapeType !== 'triangle' ? `${size}px` : '0px';
+          shape.style.height = shapeType !== 'triangle' ? `${size}px` : '0px';
+          shape.style.borderWidth = shapeType === 'triangle' ? `${size}px` : '0px';
+
+          shape.style.left = `${randomRange(0, 100)}vw`;
+          shape.style.top = `${randomRange(0, 100)}vh`;
+
+          document.body.appendChild(shape);
+
+          shape.animate([
+            { transform: 'translateY(0px)' },
+            { transform: `translateY(${randomRange(-100, 100)}px)` }
+          ], {
+            duration: randomRange(3000, 5000), 
+            direction: 'alternate',
+            iterations: Infinity
+          });
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', createShapes);
+    </script>
   </body>
 </html>
 

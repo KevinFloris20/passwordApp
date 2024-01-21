@@ -1,0 +1,65 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: #0f0f0f; 
+    color: rgb(27, 139, 220);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.welcome-container {
+    padding: 40px;
+    background: #222; 
+    border: 1px solid #3af; 
+    border-radius: 15px;
+    box-shadow: 0 0 15px #3af;
+}
+
+h1 {
+    color: #3af;
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+    text-transform: uppercase; 
+    text-shadow: 0 0 10px #3af; 
+}
+
+p {
+    font-size: 1.2em;
+    margin-bottom: 2em;
+    color: #8af; 
+}
+
+.btn {
+    background-color: #3af;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: #0f0f0f;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 0 10px #3af; 
+    text-transform: uppercase; 
+}
+
+.btn:hover {
+    background-color: #28f;     
+}
+
+
+@keyframes neonFlicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow: 0 0 10px #3af, 0 0 20px #3af, 0 0 30px #3af, 0 0 40px #3af, 0 0 70px #3af, 0 0 80px #3af, 0 0 100px #3af, 0 0 150px #3af;
+    }
+    20%, 24%, 55% {
+        text-shadow: none;
+    }
+}
+
+h1 {
+    animation: neonFlicker 1.5s infinite;
+}
