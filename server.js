@@ -9,19 +9,16 @@ require('dotenv').config();
 const port = 3000;
 const PORT = process.env.PORT || port;
 
-const users = JSON.parse(process.env.USERS);
-console.log(users);
 
 // Passport configuration
+const users = JSON.parse(process.env.USERS);
 passport.use(new LocalStrategy(
     (username, password, done) => {
-        console.log('LocalStrategy', username, password);
         const user = users.find(u => u.username === username && u.password === password);
         if (!user) {
             console.log('User not found');
             return done(null, false);
         }
-        console.log('User found');
         return done(null, user);
     }
 ));
@@ -75,10 +72,8 @@ app.set('trust proxy', 1);
 // Global middleware to require authentication for all routes
 app.use((req, res, next) => {
     if (req.isAuthenticated() || req.path === '/login') {
-        console.log('User is authenticated');
         return next();
     }
-    console.log('User is not authenticated');
     res.redirect('/login');
 });
 
