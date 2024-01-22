@@ -1,0 +1,8 @@
+runtime: nodejs18
+entrypoint: node server.js
+handlers:
+  - url: /.*
+    script: auto
+env_variables:
+  NODE_ENV: 'production'
+
