@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
@@ -91,9 +91,37 @@
             }
         }
     </style>
-</head>
-<body>
-    <div id="shapeContainer"></div>
+  </head>
+  <body>
+      <div id="shapeContainer"></div>
+      <div style="position:absolute; top:10px; left:10px; z-index:4;">
+        <div class="ui compact menu">
+            <div class="ui simple dropdown item">
+                Account Details
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <div class="item">
+                        <div class="ui list">
+                            <div class="item">
+                                <i class="user icon"></i>
+                                <div class="content">
+                                    <div class="header">Username:</div>
+                                    <div class="description">user</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <i class="lock icon"></i>
+                                <div class="content">
+                                    <div class="header">Password:</div>
+                                    <div class="description">password</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="login-form">
         <h1>Login</h1>
         <form action="/login" method="post" class="ui form">
@@ -161,5 +189,5 @@
 
         document.addEventListener('DOMContentLoaded', createShapes);
     </script>
-</body>
+  </body>
 </html>
