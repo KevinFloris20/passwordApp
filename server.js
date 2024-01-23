@@ -5,19 +5,17 @@ const LocalStrategy = require('passport-local').Strategy;
 const helmet = require('helmet'); 
 const rateLimit = require('express-rate-limit'); 
 const routes = require('./routes'); 
-require('dotenv').config(); 
+require('dotenv').config();
 const port = 3000;
-const PORT = process.env.PORT || port;
-
+const PORT = process.env.PORT || 3000;
 
 // Passport configuration
-const users = JSON.parse(process.env.USERS);
+const users = JSON.parse(process.env.USERS || '[]');
 passport.use(new LocalStrategy(
     (username, password, done) => {
         const user = users.find(u => u.username === username && u.password === password);
         if (!user) {
-            console.log('User not found');
-            return done(null, false);
+            return done(null, false, { message: 'Incorrect username or password.' });
         }
         return done(null, user);
     }
@@ -34,60 +32,54 @@ passport.deserializeUser((id, done) => {
 
 const app = express();
 
-// 5. Use helmet to set security headers
+// Security headers with helmet
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
             scriptSrc: ["'self'", "'unsafe-inline'"],
-            scriptSrcAttr: ["'unsafe-inline'"]
+            scriptSrcAttr: ["'unsafe-inline'"],            
         },
     },
 })); 
 
-// Express-rate-limit to rate limit requests
-const limiter = rateLimit({ 
+// Rate limiting
+const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100 // limit each IP to 100 requests per windowMs
 });
-
 app.use(limiter);
 app.use(express.urlencoded({ extended: false }));
-
 app.use(session({
     secret: process.env.SESSION_SECRET || 'default_session_secret',
     resave: false,
     saveUninitialized: false,
     cookie: {
         maxAge: 6000,
-        httpOnly: true, 
+        httpOnly: true,
         secure: process.env.NODE_ENV === 'production' && PORT !== port
     }
 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
-app.set('trust proxy', 1); 
-
-// Global middleware to require authentication for all routes
+app.set('trust proxy', 1);
 app.use((req, res, next) => {
     if (req.isAuthenticated() || req.path === '/login') {
-        return next();
+        next();
+    } else {
+        res.redirect('/login');
     }
-    res.redirect('/login');
 });
-
-// Serve static login page
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/login'
+    failureRedirect: '/login',
 }));
 
-// Use the routes from routes.js
 app.use(routes);
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
-
+app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+});
 
 
 // this stuff works great im not deleting it EVER 1/21/24
