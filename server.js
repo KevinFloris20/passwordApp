@@ -8,6 +8,7 @@ const routes = require('./routes');
 require('dotenv').config();
 const port = 3000;
 const PORT = process.env.PORT || 3000;
+//live on gcloud https://red-seeker-308213.uk.r.appspot.com/login
 
 // Passport configuration
 const users = JSON.parse(process.env.USERS || '[]');
